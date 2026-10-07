@@ -2100,6 +2100,42 @@ linear-gradient(112deg,#020504 0%,#050a08 46%,#08110e 72%,#020504 100%)}
 @media(max-width:900px){.jio-shell{width:min(92vw,760px);grid-template-columns:1fr}.jio-copy{padding-top:35px}.jio-person{min-height:650px}.jio-character{height:650px}.jio-word-one{top:10%;left:-2%}.jio-word-two{right:-4%}}
 @media(max-width:600px){.jio-copy h1{font-size:clamp(3.4rem,17vw,5.1rem)}.jio-person{min-height:555px}.jio-character{height:555px}.jio-float{min-width:110px;padding:8px 10px}.jf-one{top:31%}.jf-two{top:51%}.jio-word{font-size:25vw}}
 
+
+/* V10 — COMPLETE PORTFOLIO CINEMATIC SYSTEM */
+:root{--v10-line:rgba(184,255,92,.12);--v10-glass:rgba(8,16,13,.62);--v10-muted:#91a59b}
+html{scroll-behavior:smooth}
+body{background:#030605}
+section:not(.hero){position:relative;overflow:hidden}
+section:not(.hero):before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(103,246,192,.035),transparent 68%);right:-220px;top:10%;pointer-events:none}
+.wrap{width:min(1180px,90vw)}
+nav,.nav{backdrop-filter:blur(22px) saturate(125%);border-bottom:1px solid rgba(255,255,255,.055);background:rgba(3,7,6,.72)}
+.nav a,nav a{transition:color .25s ease,opacity .25s ease}
+.nav a:hover,nav a:hover{color:var(--lime)}
+.section-kicker,.eyebrow{font-family:"DM Mono",monospace;text-transform:uppercase;letter-spacing:.16em;color:var(--lime)}
+section:not(.hero) h2{letter-spacing:-.045em;line-height:.96}
+.card,.project-card,.system-card,.metric-card,.credential-card,.cert-card,.timeline-item,.experience-card{background:linear-gradient(145deg,rgba(12,23,19,.78),rgba(5,11,9,.62))!important;border:1px solid rgba(255,255,255,.075)!important;box-shadow:0 18px 55px rgba(0,0,0,.18);backdrop-filter:blur(16px);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s ease,box-shadow .35s ease}
+.card:hover,.project-card:hover,.system-card:hover,.metric-card:hover,.credential-card:hover,.cert-card:hover,.experience-card:hover{transform:translateY(-6px);border-color:rgba(184,255,92,.24)!important;box-shadow:0 24px 70px rgba(0,0,0,.3)}
+.metrics,.metric-grid{gap:12px}
+.metric-card strong,.metric-value,.stat-value{color:var(--lime)}
+.pipeline,.pipeline-strip{border-top:1px solid var(--v10-line);border-bottom:1px solid var(--v10-line);background:rgba(184,255,92,.018)}
+.timeline{position:relative}
+.timeline:before{background:linear-gradient(var(--lime),rgba(103,246,192,.16),transparent)!important}
+.project-card img,.project-image,.dashboard-img{filter:saturate(.88) contrast(1.03);transition:transform .6s cubic-bezier(.2,.8,.2,1),filter .4s ease}
+.project-card:hover img,.project-card:hover .project-image{transform:scale(1.025);filter:saturate(1) contrast(1.05)}
+.tag,.chip,.pill{border-color:rgba(184,255,92,.16)!important;background:rgba(184,255,92,.04)!important}
+.btn{transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+.btn:hover{transform:translateY(-2px)}
+.btn.primary{box-shadow:0 10px 32px rgba(184,255,92,.09)}
+footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180deg,#030605,#020403)}
+#contact{background:radial-gradient(circle at 50% 80%,rgba(184,255,92,.055),transparent 40%)}
+#contact h2{font-size:clamp(3rem,7vw,6.5rem)}
+.v10-reveal{opacity:0;transform:translateY(30px);transition:opacity .75s cubic-bezier(.2,.8,.2,1),transform .75s cubic-bezier(.2,.8,.2,1)}
+.v10-reveal.v10-visible{opacity:1;transform:none}
+.v10-progress{position:fixed;left:0;top:0;height:2px;width:0;z-index:99999;background:linear-gradient(90deg,var(--lime),var(--mint),var(--cyan));box-shadow:0 0 16px rgba(184,255,92,.35)}
+.v10-cursor{position:fixed;width:260px;height:260px;border-radius:50%;pointer-events:none;z-index:-1;transform:translate(-50%,-50%);background:radial-gradient(circle,rgba(184,255,92,.035),transparent 68%);transition:left .12s linear,top .12s linear}
+@media(prefers-reduced-motion:reduce){.v10-reveal{opacity:1;transform:none;transition:none}.jio-character,.jio-float{animation:none!important}}
+@media(max-width:700px){section:not(.hero){padding-top:76px;padding-bottom:76px}.wrap{width:min(92vw,680px)}.v10-cursor{display:none}}
+
 </style>
 </head>
 
@@ -3855,5 +3891,20 @@ if(introAudio && introBtn){
 
 </script>
 
+<script>
+/* V10 — SITE-WIDE MOTION + POLISH */
+(()=>{if(window.__v10)return;window.__v10=true;
+ const p=document.createElement('div');p.className='v10-progress';document.body.appendChild(p);
+ const glow=document.createElement('div');glow.className='v10-cursor';document.body.appendChild(glow);
+ addEventListener('mousemove',e=>{glow.style.left=e.clientX+'px';glow.style.top=e.clientY+'px'},{passive:true});
+ const progress=()=>{const d=document.documentElement;const max=d.scrollHeight-innerHeight;p.style.width=(max>0?(scrollY/max)*100:0)+'%'};
+ addEventListener('scroll',progress,{passive:true});progress();
+ const targets=[...document.querySelectorAll('section:not(.hero) .wrap > *, .project-card, .system-card, .metric-card, .credential-card, .cert-card, .timeline-item')];
+ targets.forEach((el,i)=>{el.classList.add('v10-reveal');el.style.transitionDelay=Math.min((i%4)*55,165)+'ms'});
+ const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v10-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -45px'});
+ targets.forEach(el=>io.observe(el));
+ document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const id=a.getAttribute('href');if(id&&id.length>1){const t=document.querySelector(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}}));
+})();
+</script>
 </body>
 </html>
