@@ -2178,6 +2178,18 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
 .jio-person.speaking::after{content:"VOICE REACTIVE • LIVE";box-shadow:0 0 30px rgba(184,255,92,.22)}
 @keyframes aiPresence{0%,100%{transform:translate3d(var(--ai-x),calc(var(--ai-y) + 2px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1)}35%{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 12px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) - 1.5deg)) scale(1.012)}70%{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 5px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) + 1.2deg)) scale(1.006)}}
 @keyframes aiSpeaking{from{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 4px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) - 2deg)) scale(1.01)}to{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 15px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) + 2deg)) scale(1.025)}}
+
+/* V13 — CLEAN CINEMATIC CHARACTER EXPERIENCE */
+.ai-scanline,.ai-eq,.jio-now{display:none!important}
+.jio-person::after{content:none!important}
+.ai-character-shell{width:min(760px,104%);height:min(88svh,900px);background:none;border:0;box-shadow:none;overflow:visible}
+.ai-character-shell::before{inset:8% 5% 4%;border-radius:50%;border:1px solid rgba(184,255,92,.09);background:radial-gradient(circle at 50% 42%,rgba(184,255,92,.08),transparent 56%);box-shadow:none}
+.ai-character-shell .jio-character{width:100%;height:100%;object-fit:contain;object-position:center bottom;border-radius:0;box-shadow:none!important}
+.ai-status{top:auto;bottom:4%;left:50%;min-width:0;padding:8px 12px;background:rgba(3,8,6,.52);border-color:rgba(255,255,255,.09);box-shadow:none}
+.ai-status b{font-size:.55rem}.ai-status span{font-size:.43rem}
+.jio-person.speaking .ai-character-shell{filter:drop-shadow(0 0 28px rgba(184,255,92,.12))}
+@media(max-width:600px){.ai-character-shell{height:555px;width:100%}.ai-status{bottom:2%}}
+
 </style>
 </head>
 
@@ -2246,7 +2258,10 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
       <div class="ai-character-shell" id="aiCharacterShell" aria-label="Interactive AI character of Sai Deekshitha">
         <div class="ai-scanline"></div>
         <div class="ai-status"><b>AI DEEKSHITHA</b><span id="aiState">READY • CLICK MEET DEEKSHITHA</span></div>
-        <img class="jio-character" src="profile picture.JPEG" alt="Sai Deekshitha Reddy Palpunoori">
+        <picture>
+          <source srcset="deekshitha-hero.webp" type="image/webp">
+          <img class="jio-character" src="deekshitha-hero.jpg" onerror="this.onerror=null;this.src='profile picture.JPEG';" alt="Sai Deekshitha Reddy Palpunoori animated portfolio character">
+        </picture>
         <div class="ai-eq" id="aiEq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
       </div>
       <div class="jio-float jf-one"><small>01</small><strong>PLAN</strong><span>Demand • S&OP • MRP</span></div>
