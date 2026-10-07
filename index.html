@@ -2136,6 +2136,23 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
 @media(prefers-reduced-motion:reduce){.v10-reveal{opacity:1;transform:none;transition:none}.jio-character,.jio-float{animation:none!important}}
 @media(max-width:700px){section:not(.hero){padding-top:76px;padding-bottom:76px}.wrap{width:min(92vw,680px)}.v10-cursor{display:none}}
 
+
+/* V11 — AI CHARACTER ENGINE */
+.jio-person{--ai-x:0px;--ai-y:0px;--ai-rx:0deg;--ai-ry:0deg}
+.jio-character{will-change:transform,filter;transition:filter .25s ease;transform:translate3d(var(--ai-x),var(--ai-y),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry));animation:aiBreathe 4.8s ease-in-out infinite!important}
+.jio-person.speaking .jio-character{animation:aiTalk .52s ease-in-out infinite alternate!important;filter:drop-shadow(0 48px 54px rgba(0,0,0,.64)) brightness(1.035)}
+.ai-orbit{position:absolute;z-index:2;width:78%;aspect-ratio:1;border-radius:50%;border:1px solid rgba(184,255,92,.10);top:11%;left:12%;pointer-events:none;animation:aiOrbit 18s linear infinite}
+.ai-orbit:before,.ai-orbit:after{content:"";position:absolute;border-radius:50%;background:var(--lime);box-shadow:0 0 18px rgba(184,255,92,.7)}
+.ai-orbit:before{width:7px;height:7px;top:9%;left:24%}.ai-orbit:after{width:5px;height:5px;right:8%;bottom:28%;background:var(--cyan)}
+.ai-status{position:absolute;z-index:15;left:50%;bottom:3%;transform:translateX(-50%);display:flex;align-items:center;gap:9px;padding:9px 13px;border-radius:999px;background:rgba(3,8,6,.68);border:1px solid rgba(255,255,255,.09);backdrop-filter:blur(14px);font:500 .56rem "DM Mono",monospace;letter-spacing:.12em;color:#9eb2a8;white-space:nowrap}
+.ai-status b{width:6px;height:6px;border-radius:50%;background:#62736b}.jio-person.speaking .ai-status b{background:var(--lime);box-shadow:0 0 14px rgba(184,255,92,.9);animation:pulse .8s infinite}
+.ai-wave{display:flex;align-items:center;gap:2px;height:15px}.ai-wave i{display:block;width:2px;height:5px;border-radius:2px;background:var(--lime);transform-origin:center;transition:transform .08s linear}
+@keyframes aiBreathe{0%,100%{transform:translate3d(var(--ai-x),calc(var(--ai-y) + 1px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1)}50%{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 7px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1.006)}}
+@keyframes aiTalk{from{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 3px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1.003)}to{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 10px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1.009)}}
+@keyframes aiOrbit{to{transform:rotate(360deg)}}
+@media(max-width:700px){.ai-orbit{width:94%;left:3%;top:10%}.ai-status{bottom:1%}}
+@media(prefers-reduced-motion:reduce){.jio-character,.ai-orbit{animation:none!important}}
+
 </style>
 </head>
 
@@ -3904,6 +3921,31 @@ if(introAudio && introBtn){
  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('v10-visible');io.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -45px'});
  targets.forEach(el=>io.observe(el));
  document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click',()=>{const id=a.getAttribute('href');if(id&&id.length>1){const t=document.querySelector(id);if(t)t.scrollIntoView({behavior:'smooth',block:'start'})}}));
+})();
+</script>
+<script>
+/* V11 — AI CHARACTER ENGINE: pointer depth + real voice reactivity */
+(()=>{if(window.__aiCharacterV11)return;window.__aiCharacterV11=true;
+ const stage=document.getElementById('eliteStage'), character=stage&&stage.querySelector('.jio-character'), audio=document.getElementById('introAudio');
+ if(!stage||!character||!audio)return;
+ const orbit=document.createElement('div');orbit.className='ai-orbit';stage.appendChild(orbit);
+ const status=document.createElement('div');status.className='ai-status';status.innerHTML='<b></b><span>AI DIGITAL HUMAN</span><em class="ai-wave"></em>';
+ stage.appendChild(status);
+ const wave=status.querySelector('.ai-wave');
+ for(let i=0;i<9;i++){const bar=document.createElement('i');wave.appendChild(bar)}
+ const bars=[...wave.children];
+ if(matchMedia('(pointer:fine)').matches){
+   stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;stage.style.setProperty('--ai-x',(x*12)+'px');stage.style.setProperty('--ai-y',(y*7)+'px');stage.style.setProperty('--ai-rx',(-y*2.4)+'deg');stage.style.setProperty('--ai-ry',(x*4.2)+'deg')});
+   stage.addEventListener('pointerleave',()=>['--ai-x','--ai-y','--ai-rx','--ai-ry'].forEach(v=>stage.style.removeProperty(v)));
+ }
+ let ctx,analyser,src,data,raf;
+ const reset=()=>{cancelAnimationFrame(raf);bars.forEach(b=>b.style.transform='scaleY(1)')};
+ const react=()=>{try{
+   if(!ctx){ctx=new (window.AudioContext||window.webkitAudioContext)();analyser=ctx.createAnalyser();analyser.fftSize=64;analyser.smoothingTimeConstant=.72;src=ctx.createMediaElementSource(audio);src.connect(analyser);analyser.connect(ctx.destination);data=new Uint8Array(analyser.frequencyBinCount)}
+   if(ctx.state==='suspended')ctx.resume();cancelAnimationFrame(raf);
+   const tick=()=>{analyser.getByteFrequencyData(data);let sum=0;bars.forEach((b,i)=>{const v=data[Math.min(data.length-1,i+2)]||0;sum+=v;b.style.transform='scaleY('+(1+v/34)+')'});stage.style.setProperty('--voice-energy',String(sum/(bars.length*255)));raf=requestAnimationFrame(tick)};tick();
+ }catch(e){}};
+ audio.addEventListener('play',react);audio.addEventListener('pause',reset);audio.addEventListener('ended',reset);
 })();
 </script>
 </body>
