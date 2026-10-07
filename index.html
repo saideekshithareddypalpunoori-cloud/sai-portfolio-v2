@@ -2190,6 +2190,25 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
 .jio-person.speaking .ai-character-shell{filter:drop-shadow(0 0 28px rgba(184,255,92,.12))}
 @media(max-width:600px){.ai-character-shell{height:555px;width:100%}.ai-status{bottom:2%}}
 
+
+/* V14 — VOICE-DRIVEN DIGITAL PRESENCE */
+.jio-person{--voice-energy:0;perspective:1200px}
+.ai-character-shell{transform-style:preserve-3d}
+.jio-character{
+  will-change:transform,filter;
+  transform-origin:50% 78%;
+  transition:filter .18s ease;
+}
+.jio-person.speaking .jio-character{
+  animation:none!important;
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.38)) drop-shadow(0 0 22px rgba(184,255,92,.10));
+}
+.jio-halo{transition:opacity .18s ease,transform .18s ease}
+.jio-person.speaking .jio-halo{opacity:.82}
+@media (prefers-reduced-motion:reduce){
+  .jio-character,.jio-halo{animation:none!important;transform:none!important}
+}
+
 </style>
 </head>
 
@@ -3990,5 +4009,54 @@ if(introAudio && introBtn){
  audio.addEventListener('play',react);audio.addEventListener('pause',reset);audio.addEventListener('ended',reset);
 })();
 </script>
+
+<script>
+/* V14 — natural idle motion + voice-driven body performance */
+(()=>{
+  if(window.__deekshithaMotionV14)return; window.__deekshithaMotionV14=true;
+  const stage=document.getElementById('eliteStage');
+  const character=stage&&stage.querySelector('.jio-character');
+  const audio=document.getElementById('introAudio');
+  const state=document.getElementById('aiState');
+  if(!stage||!character||!audio)return;
+
+  let raf=0, start=performance.now(), lastEnergy=0;
+  const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+  function frame(now){
+    if(reduced){ character.style.transform='none'; return; }
+    const t=(now-start)/1000;
+    const speaking=!audio.paused&&!audio.ended;
+    const cssEnergy=parseFloat(getComputedStyle(stage).getPropertyValue('--voice-energy'))||0;
+    lastEnergy += (cssEnergy-lastEnergy)*.18;
+
+    const breathe=Math.sin(t*1.75)*1.7;
+    const sway=Math.sin(t*.72)*1.25;
+    const nod=speaking ? Math.sin(t*5.4)*(.35+lastEnergy*1.15) : Math.sin(t*.58)*.22;
+    const lift=speaking ? -lastEnergy*5 : breathe;
+    const scale=speaking ? 1+lastEnergy*.012 : 1+Math.sin(t*1.75)*.0025;
+
+    character.style.transform =
+      'translate3d('+sway.toFixed(2)+'px,'+lift.toFixed(2)+'px,0) '+
+      'rotateZ('+nod.toFixed(2)+'deg) scale('+scale.toFixed(4)+')';
+
+    const halo=stage.querySelector('.jio-halo');
+    if(halo && speaking){
+      halo.style.transform='translate(-50%,-50%) scale('+(1+lastEnergy*.10).toFixed(3)+')';
+      halo.style.opacity=String(.52+lastEnergy*.34);
+    }else if(halo){
+      halo.style.transform=''; halo.style.opacity='';
+    }
+    raf=requestAnimationFrame(frame);
+  }
+
+  const setState=(text)=>{if(state)state.textContent=text};
+  audio.addEventListener('play',()=>setState('SPEAKING • VOICE REACTIVE'));
+  audio.addEventListener('pause',()=>{if(!audio.ended)setState('PAUSED • CLICK TO CONTINUE')});
+  audio.addEventListener('ended',()=>setState('READY • CLICK MEET DEEKSHITHA'));
+  cancelAnimationFrame(raf); raf=requestAnimationFrame(frame);
+})();
+</script>
+
 </body>
 </html>
