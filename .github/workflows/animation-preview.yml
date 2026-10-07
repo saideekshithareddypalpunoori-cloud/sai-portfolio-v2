@@ -1,0 +1,33 @@
+name: Animation Prototype Preview
+on:
+  push:
+    branches: [character-animation-prototype]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: animation-preview
+  cancel-in-progress: true
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build isolated preview
+        run: |
+          mkdir -p _preview
+          cp animation-prototype.html _preview/index.html
+          cp deekshitha-hero.jpg _preview/deekshitha-hero.jpg
+          cp sai-intro.mp3 _preview/sai-intro.mp3
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _preview
+      - name: Deploy preview
+        id: deployment
+        uses: actions/deploy-pages@v4
