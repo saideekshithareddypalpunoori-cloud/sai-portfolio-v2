@@ -2153,6 +2153,15 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
 @media(max-width:700px){.ai-orbit{width:94%;left:3%;top:10%}.ai-status{bottom:1%}}
 @media(prefers-reduced-motion:reduce){.jio-character,.ai-orbit{animation:none!important}}
 
+
+/* V12 — VISIBLE CODE-DRIVEN CHARACTER MODE */
+.jio-person{overflow:visible}
+.jio-character{animation:aiPresence 3.6s ease-in-out infinite!important;transform-origin:50% 72%;box-shadow:0 0 0 1px rgba(184,255,92,.08)}
+.jio-person.speaking .jio-character{animation:aiSpeaking .38s ease-in-out infinite alternate!important;filter:drop-shadow(0 48px 60px rgba(0,0,0,.7)) brightness(1.08) saturate(1.06)}
+.jio-person::after{content:"CODE-DRIVEN CHARACTER";position:absolute;z-index:16;top:10%;right:2%;padding:8px 11px;border:1px solid rgba(184,255,92,.25);border-radius:999px;background:rgba(3,8,6,.78);color:var(--lime);font:600 .55rem "DM Mono",monospace;letter-spacing:.12em;box-shadow:0 0 30px rgba(184,255,92,.08)}
+.jio-person.speaking::after{content:"VOICE REACTIVE • LIVE";box-shadow:0 0 30px rgba(184,255,92,.22)}
+@keyframes aiPresence{0%,100%{transform:translate3d(var(--ai-x),calc(var(--ai-y) + 2px),0) rotateX(var(--ai-rx)) rotateY(var(--ai-ry)) scale(1)}35%{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 12px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) - 1.5deg)) scale(1.012)}70%{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 5px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) + 1.2deg)) scale(1.006)}}
+@keyframes aiSpeaking{from{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 4px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) - 2deg)) scale(1.01)}to{transform:translate3d(var(--ai-x),calc(var(--ai-y) - 15px),0) rotateX(var(--ai-rx)) rotateY(calc(var(--ai-ry) + 2deg)) scale(1.025)}}
 </style>
 </head>
 
@@ -2218,7 +2227,7 @@ footer{border-top:1px solid rgba(255,255,255,.06);background:linear-gradient(180
       <div class="jio-word jio-word-one">ANALYZE</div>
       <div class="jio-word jio-word-two">DELIVER</div>
       <div class="jio-halo"></div>
-      <img class="jio-character" src="deekshitha-hero.jpg" onerror="this.onerror=null;this.src='profile picture.JPEG';" alt="Sai Deekshitha Reddy Palpunoori">
+      <img class="jio-character" src="profile picture.JPEG" alt="Sai Deekshitha Reddy Palpunoori">
       <div class="jio-float jf-one"><small>01</small><strong>PLAN</strong><span>Demand • S&OP • MRP</span></div>
       <div class="jio-float jf-two"><small>02</small><strong>OPTIMIZE</strong><span>Inventory • Procurement</span></div>
       <div class="jio-float jf-three"><small>03</small><strong>DELIVER</strong><span>Logistics • Analytics</span></div>
