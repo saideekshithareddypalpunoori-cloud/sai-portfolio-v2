@@ -1895,6 +1895,78 @@ footer{padding:24px 0 45px}
 @media(max-width:900px){.elite-grid{grid-template-columns:1fr}.elite-stage{min-height:620px}.elite-copy h1{font-size:clamp(3.3rem,12vw,6rem)}.scroll-cue{display:none}}
 @media(max-width:560px){.elite-hero{padding-top:110px}.elite-stage{min-height:520px}.digital-human{width:78%}.human-frame img{height:420px}.signal-card{width:125px;padding:10px}.signal-top{left:-1%}.signal-mid{right:-1%}.signal-low{left:-1%}.voice-line small{font-size:.5rem}}
 
+
+/* =========================================================
+   V6 — EXECUTIVE CINEMATIC HERO
+========================================================= */
+.elite-hero{
+  min-height:100svh;
+  padding:132px 0 74px;
+  background:
+    radial-gradient(ellipse at 74% 48%,rgba(103,246,192,.13),transparent 28%),
+    radial-gradient(ellipse at 92% 15%,rgba(105,221,255,.08),transparent 25%),
+    linear-gradient(115deg,rgba(5,10,9,.12),rgba(7,17,15,.66));
+}
+.elite-hero::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(5,10,9,.96) 0%,rgba(5,10,9,.76) 37%,transparent 67%);
+}
+.elite-grid{grid-template-columns:minmax(0,.92fr) minmax(430px,1.08fr);gap:18px;min-height:720px}
+.elite-copy{align-self:center;padding-bottom:26px}
+.elite-copy .eyebrow{margin-bottom:28px;letter-spacing:.055em;text-transform:uppercase}
+.elite-copy .hero-name{margin-bottom:12px;color:#9fb5aa;font-size:.83rem;letter-spacing:.12em;text-transform:uppercase}
+.elite-copy h1{max-width:760px;font-size:clamp(4rem,6.2vw,7rem);line-height:.88;letter-spacing:-.074em}
+.elite-copy .hero-gradient{background:linear-gradient(92deg,#fff 2%,#dfffc0 28%,var(--mint) 63%,var(--cyan));background-clip:text;-webkit-background-clip:text}
+.elite-copy .hero-copy{max-width:590px;margin-top:26px;color:#afc1b8;font-size:1rem;line-height:1.78}
+.elite-copy .hero-actions{margin-top:30px}
+.elite-copy .btn{min-height:51px;padding-inline:20px}
+.intro-btn{box-shadow:0 12px 40px rgba(184,255,92,.13)}
+.voice-line{margin-top:22px}
+.elite-stage{min-height:720px;overflow:visible}
+.stage-aura{inset:5% -2% 3% 4%;opacity:.8;background:radial-gradient(circle at 50% 48%,rgba(184,255,92,.15),rgba(103,246,192,.055) 37%,transparent 68%)}
+.stage-orbit{opacity:.65}.orbit-a{width:610px;height:610px}.orbit-b{width:480px;height:480px}
+.digital-human{bottom:18px;width:min(455px,75%)}
+.human-frame{
+  border-radius:220px 220px 34px 34px;
+  border:1px solid rgba(255,255,255,.14);
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(3,8,6,.24));
+  box-shadow:0 65px 120px rgba(0,0,0,.56),inset 0 1px rgba(255,255,255,.08)
+}
+.human-frame img{height:590px;object-position:center 22%;transition:transform .7s cubic-bezier(.2,.8,.2,1)}
+.digital-human:hover .human-frame img{transform:scale(1.018)}
+.human-plinth{width:84%;height:30px;opacity:.9}
+.signal-card{width:158px;padding:14px 15px;background:rgba(5,12,10,.74);border-color:rgba(255,255,255,.12)}
+.signal-card strong{font-family:"Manrope",sans-serif;font-size:.78rem;letter-spacing:.13em}
+.signal-top{top:14%;left:0}.signal-mid{top:38%;right:-1%}.signal-low{bottom:15%;left:-1%}
+.now-speaking{right:3%;bottom:7%;padding:10px 13px}
+.scroll-cue{bottom:15px}
+@media(max-width:1100px){
+  .elite-grid{grid-template-columns:.95fr 1.05fr}
+  .elite-copy h1{font-size:clamp(3.6rem,6.2vw,5.8rem)}
+  .digital-human{width:min(410px,76%)}
+  .human-frame img{height:535px}
+}
+@media(max-width:900px){
+  .elite-hero::before{background:linear-gradient(180deg,rgba(5,10,9,.8),transparent 58%)}
+  .elite-grid{grid-template-columns:1fr;min-height:auto}
+  .elite-copy{text-align:center;padding-bottom:0}
+  .elite-copy .hero-copy{margin-left:auto;margin-right:auto}
+  .elite-copy .hero-actions,.voice-line{justify-content:center}
+  .elite-stage{min-height:650px}
+}
+@media(max-width:560px){
+  .elite-hero{padding-top:105px}
+  .elite-copy{text-align:left}
+  .elite-copy h1{font-size:clamp(3.25rem,15vw,4.7rem)}
+  .elite-copy .hero-actions,.voice-line{justify-content:flex-start}
+  .elite-stage{min-height:535px}
+  .digital-human{width:82%;bottom:12px}
+  .human-frame img{height:445px}
+  .stage-orbit{display:none}
+  .signal-card{display:none}
+  .now-speaking{right:50%;transform:translateX(50%);bottom:2%;white-space:nowrap}
+}
+
 </style>
 </head>
 
