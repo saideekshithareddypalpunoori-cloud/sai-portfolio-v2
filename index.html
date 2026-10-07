@@ -2071,6 +2071,35 @@ footer{padding:24px 0 45px}
 @media(max-width:900px){.jio-shell{grid-template-columns:1fr}.jio-copy{padding-bottom:0}.jio-person{min-height:610px}.jio-word{font-size:22vw}.jio-character{height:600px}.jf-one{left:0}.jf-two{right:0}}
 @media(max-width:600px){.jio-hero{padding-top:105px}.jio-copy h1{font-size:clamp(3.15rem,16vw,4.8rem)}.jio-person{min-height:520px}.jio-character{height:510px;width:100%}.jio-float{width:145px}.jf-three{display:none}}
 
+
+/* V9 — REFERENCE-STYLE CINEMATIC REFINEMENT */
+.jio-hero{min-height:100svh;padding:92px 0 20px;background:
+radial-gradient(ellipse at 72% 42%,rgba(116,255,184,.105),transparent 25%),
+radial-gradient(ellipse at 72% 92%,rgba(76,175,130,.08),transparent 35%),
+linear-gradient(112deg,#020504 0%,#050a08 46%,#08110e 72%,#020504 100%)}
+.jio-shell{width:min(1500px,94vw);max-width:none;min-height:calc(100svh - 112px);grid-template-columns:.82fr 1.18fr;gap:0;position:relative}
+.jio-shell:before{content:"";position:absolute;inset:8% 3% 3% 36%;border:1px solid rgba(255,255,255,.035);border-radius:50%;transform:rotate(-9deg);pointer-events:none}
+.jio-copy{padding:50px 0 60px;z-index:20}
+.jio-copy .eyebrow{font-size:.66rem;letter-spacing:.17em}
+.jio-copy .hero-name{margin-top:24px;margin-bottom:22px;color:#91a59b}
+.jio-copy h1{font-size:clamp(4.4rem,7vw,8rem);line-height:.84;max-width:850px;position:relative;z-index:12}
+.jio-copy .hero-copy{max-width:530px;margin-top:28px;line-height:1.75}
+.jio-copy .hero-actions{margin-top:30px}
+.jio-tags{opacity:.76}
+.jio-person{min-height:calc(100svh - 112px);overflow:visible}
+.jio-halo{width:92%;left:5%;top:7%;background:radial-gradient(circle,rgba(184,255,92,.105),rgba(103,246,192,.035) 39%,transparent 68%)}
+.jio-character{width:min(760px,104%);height:min(88svh,900px);object-fit:contain;object-position:center bottom;border-radius:0;filter:drop-shadow(0 48px 54px rgba(0,0,0,.64));z-index:5}
+.jio-word{font-size:clamp(7rem,13vw,14rem);font-weight:800;-webkit-text-stroke:1px rgba(223,255,238,.095);letter-spacing:-.075em}
+.jio-word-one{top:7%;left:-8%;transform:none}
+.jio-word-two{right:-8%;bottom:0%;opacity:.62}
+.jio-float{width:auto;min-width:142px;padding:10px 13px;border-radius:12px;background:rgba(4,10,8,.42);border-color:rgba(184,255,92,.12);box-shadow:none}
+.jio-float span{display:none}.jio-float small{opacity:.7}.jio-float strong{font-size:.65rem}
+.jf-one{left:3%;top:29%}.jf-two{right:0;top:49%}.jf-three{left:13%;bottom:10%}
+.jio-now{right:2%;bottom:8%;background:rgba(3,8,6,.48)}
+.jio-person:after{content:"";position:absolute;left:10%;right:3%;bottom:2%;height:1px;background:linear-gradient(90deg,transparent,rgba(184,255,92,.35),transparent)}
+@media(max-width:900px){.jio-shell{width:min(92vw,760px);grid-template-columns:1fr}.jio-copy{padding-top:35px}.jio-person{min-height:650px}.jio-character{height:650px}.jio-word-one{top:10%;left:-2%}.jio-word-two{right:-4%}}
+@media(max-width:600px){.jio-copy h1{font-size:clamp(3.4rem,17vw,5.1rem)}.jio-person{min-height:555px}.jio-character{height:555px}.jio-float{min-width:110px;padding:8px 10px}.jf-one{top:31%}.jf-two{top:51%}.jio-word{font-size:25vw}}
+
 </style>
 </head>
 
