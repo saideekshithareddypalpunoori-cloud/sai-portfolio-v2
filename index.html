@@ -1967,6 +1967,78 @@ footer{padding:24px 0 45px}
   .now-speaking{right:50%;transform:translateX(50%);bottom:2%;white-space:nowrap}
 }
 
+
+/* V7 — CUSTOM CODED DIGITAL-HUMAN EXPERIENCE */
+.elite-stage{perspective:1400px;isolation:isolate}
+.elite-stage::before{
+  content:"";position:absolute;inset:7% 5% 3%;border-radius:50%;
+  background:radial-gradient(circle at 50% 38%,rgba(103,246,192,.15),rgba(105,221,255,.055) 36%,transparent 68%);
+  filter:blur(18px);transform:translateZ(-80px);pointer-events:none;
+}
+.digital-human{
+  transform-style:preserve-3d;will-change:transform,filter;
+  animation:humanIdle 5.4s ease-in-out infinite;
+  transition:filter .35s ease,transform .18s ease;
+}
+.digital-human::before{
+  content:"";position:absolute;inset:8% 12% 3%;z-index:-1;border-radius:46% 46% 34% 34%;
+  background:radial-gradient(circle at 50% 34%,rgba(184,255,92,.16),rgba(105,221,255,.07) 45%,transparent 72%);
+  filter:blur(34px);transform:translateZ(-55px);
+}
+.digital-human img{
+  transform:translateZ(42px) scale(1.015);transform-origin:50% 72%;
+  filter:drop-shadow(0 34px 40px rgba(0,0,0,.48));
+  transition:transform .16s ease,filter .25s ease;
+}
+.elite-stage.speaking .digital-human{
+  animation:humanTalk .72s ease-in-out infinite alternate;
+  filter:drop-shadow(0 0 24px rgba(103,246,192,.12));
+}
+.elite-stage.speaking .digital-human img{
+  animation:voicePresence .34s ease-in-out infinite alternate;
+}
+.elite-stage::after{
+  content:"";position:absolute;left:22%;right:22%;bottom:5%;height:8%;z-index:-2;
+  border-radius:50%;background:rgba(0,0,0,.48);filter:blur(18px);
+  animation:shadowBreath 5.4s ease-in-out infinite;
+}
+@keyframes humanIdle{
+  0%,100%{transform:translate3d(0,0,0) rotateX(0deg) rotateY(-1.2deg)}
+  28%{transform:translate3d(0,-5px,10px) rotateX(.35deg) rotateY(1.4deg)}
+  58%{transform:translate3d(2px,-9px,18px) rotateX(-.25deg) rotateY(-.4deg)}
+  78%{transform:translate3d(-2px,-4px,8px) rotateX(.2deg) rotateY(1deg)}
+}
+@keyframes humanTalk{
+  from{transform:translate3d(-1px,-7px,18px) rotateX(-.35deg) rotateY(-1.5deg) rotateZ(-.15deg)}
+  to{transform:translate3d(2px,-11px,28px) rotateX(.45deg) rotateY(1.8deg) rotateZ(.18deg)}
+}
+@keyframes voicePresence{
+  from{transform:translateZ(44px) scale(1.016)}
+  to{transform:translateZ(49px) scale(1.022)}
+}
+@keyframes shadowBreath{50%{transform:scaleX(.9);opacity:.72}}
+.human-depth-ring{
+  position:absolute;inset:12% 13%;border-radius:50%;pointer-events:none;z-index:-1;
+  border:1px solid rgba(103,246,192,.11);
+  box-shadow:inset 0 0 80px rgba(105,221,255,.035);
+  transform:translateZ(-35px);animation:depthOrbit 16s linear infinite;
+}
+.human-depth-ring::before,.human-depth-ring::after{
+  content:"";position:absolute;width:7px;height:7px;border-radius:50%;background:var(--mint);
+  box-shadow:0 0 18px rgba(103,246,192,.7);
+}
+.human-depth-ring::before{top:10%;left:22%}.human-depth-ring::after{right:8%;bottom:30%;background:var(--cyan)}
+@keyframes depthOrbit{to{transform:translateZ(-35px) rotate(360deg)}}
+.voice-reactor{
+  position:absolute;left:50%;bottom:7%;transform:translateX(-50%);z-index:12;
+  display:flex;align-items:end;gap:3px;height:28px;opacity:0;transition:opacity .25s ease;pointer-events:none;
+}
+.elite-stage.speaking .voice-reactor{opacity:.85}
+.voice-reactor i{display:block;width:3px;height:7px;border-radius:3px;background:linear-gradient(var(--mint),var(--cyan));transform-origin:bottom}
+@media (prefers-reduced-motion:reduce){
+ .digital-human,.digital-human img,.human-depth-ring,.elite-stage::after{animation:none!important}
+}
+
 </style>
 </head>
 
@@ -3678,6 +3750,58 @@ if(introAudio && introBtn){
     eliteStage.classList.remove("speaking"); voiceLine.classList.remove("playing"); introLabel.textContent="Meet Deekshitha"; introAudio.currentTime=0;
   });
 }
+
+
+/* V7 — pointer depth + live audio-reactive digital human */
+(function(){
+  const stage=document.getElementById("eliteStage");
+  const human=stage&&stage.querySelector(".digital-human");
+  const audio=document.getElementById("introAudio");
+  if(!stage||!human||!audio)return;
+
+  if(!stage.querySelector(".human-depth-ring")){
+    const ring=document.createElement("div"); ring.className="human-depth-ring"; stage.appendChild(ring);
+    const reactor=document.createElement("div"); reactor.className="voice-reactor";
+    for(let i=0;i<13;i++){const bar=document.createElement("i"); reactor.appendChild(bar);}
+    stage.appendChild(reactor);
+  }
+  const bars=[...stage.querySelectorAll(".voice-reactor i")];
+
+  if(window.matchMedia("(pointer:fine)").matches){
+    stage.addEventListener("pointermove",e=>{
+      const r=stage.getBoundingClientRect();
+      const x=(e.clientX-r.left)/r.width-.5, y=(e.clientY-r.top)/r.height-.5;
+      human.style.transform="translate3d("+(-x*10)+"px,"+(-y*7)+"px,22px) rotateX("+(-y*3.2)+"deg) rotateY("+(x*5.5)+"deg)";
+    });
+    stage.addEventListener("pointerleave",()=>human.style.transform="");
+  }
+
+  let ctx,analyser,source,data,raf;
+  function startReactive(){
+    try{
+      if(!ctx){
+        ctx=new (window.AudioContext||window.webkitAudioContext)();
+        analyser=ctx.createAnalyser(); analyser.fftSize=64; analyser.smoothingTimeConstant=.78;
+        source=ctx.createMediaElementSource(audio); source.connect(analyser); analyser.connect(ctx.destination);
+        data=new Uint8Array(analyser.frequencyBinCount);
+      }
+      if(ctx.state==="suspended")ctx.resume();
+      cancelAnimationFrame(raf);
+      const tick=()=>{
+        analyser.getByteFrequencyData(data);
+        bars.forEach((b,i)=>{
+          const v=data[Math.min(data.length-1,2+i)]||0;
+          b.style.transform="scaleY("+(0.65+v/38)+")";
+          b.style.opacity=String(.35+v/360);
+        });
+        raf=requestAnimationFrame(tick);
+      }; tick();
+    }catch(e){}
+  }
+  audio.addEventListener("play",startReactive);
+  audio.addEventListener("pause",()=>{cancelAnimationFrame(raf);bars.forEach(b=>b.style.transform="scaleY(1)")});
+  audio.addEventListener("ended",()=>{cancelAnimationFrame(raf);bars.forEach(b=>b.style.transform="scaleY(1)")});
+})();
 
 </script>
 
